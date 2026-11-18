@@ -3,7 +3,7 @@ import './FetchIA.css';
 import ReactMarkdown from 'react-markdown';
 
 //sustituir por tu API de GROG: https://console.groq.com/keys
-const GROQ_API_KEY = "YOUR_API_KEY";
+const GROQ_API_KEY = "";
 
 export default function FetchIA({ genres: genresProp, endpoint = '/recommend' }) {
   const genres = genresProp && genresProp.length
@@ -65,7 +65,7 @@ export default function FetchIA({ genres: genresProp, endpoint = '/recommend' })
             "Authorization": `Bearer ${GROQ_API_KEY}`
             },
             body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",
+            model: "openai/gpt-oss-120b",
             messages: [{
                 role: "user",
                 content: prompt
@@ -77,7 +77,7 @@ export default function FetchIA({ genres: genresProp, endpoint = '/recommend' })
         if (data.choices && data.choices.length > 0) {
             setRecommendation(data.choices[0].message.content);
         } else {
-            setError('No se pudo obtener una recomendación. Intenta de nuevo.');
+            setError(data.error?.message || 'No se pudo obtener una recomendación. Intenta de nuevo.');
         }
     } catch (err) {
       setError('Ocurrió un error. Por favor, intenta de nuevo.');
